@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 import model.GlobalData;
 import model.LearningContext;
 import model.AnswerCollection;
+import model.AnswerList;
 import model.Vocable;
 import view.LearnGUI;
 
@@ -43,7 +44,7 @@ public class LearnController implements Controller {
 			if (this.vocList.size() > 0) {
 				int sz = this.vocList.size();
 				int n = ls.getSize();
-				//this.answers = new AnswerList(Math.min(sz,n));
+				this.answers = new AnswerList(Math.min(sz,n));
 				this.currentMode = ls.getMode();
 				this.gui.setEntry(this.vocList.get(0),this.currentMode);
 			} else {

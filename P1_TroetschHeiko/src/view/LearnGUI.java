@@ -26,6 +26,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
+import model.LearnSettings;
 import model.LearningContext;
 import model.Vocable;
 import controller.Controller;
@@ -251,7 +252,7 @@ import static controller.Controller.*;
 		}
 		int anzahl = (Integer)this.numVoc.getSelectedItem(); // autounboxing
 		LearningContext ls = null;
-		//ls = new LearnSettings(chosenUnits,chosenSections,anzahl,this.learnMode);
+		ls = new LearnSettings(chosenUnits,chosenSections,anzahl,this.learnMode);
 
 		return ls;
 	}
