@@ -17,7 +17,6 @@ public class AnswerList implements AnswerCollection{
 	
 	private Vector<AwnserVocable> vocableAnswers;
 	public static final int SOURCE_GIVEN=0,TARGET_GIVEN=1;
-	double lernfortschritt = 100;
 	
 	public AnswerList (int min){
 		
@@ -37,29 +36,35 @@ public class AnswerList implements AnswerCollection{
 			//if the mode of the typed word was with the target given
 			if(vocableAnswers.elementAt(i).mode == TARGET_GIVEN){
 				//compares awnser to source word
-				lernfortschritt -= compareWords(vocableAnswers.elementAt(i).awnser, vocables.elementAt(i).getWord(), fehler);
+				vocables.elementAt(i).setLFactor(vocables.elementAt(i).getlFactor()+compareWords(vocableAnswers.elementAt(i).awnser, vocables.elementAt(i).getWord()));
 			}else if(vocableAnswers.elementAt(i).mode == SOURCE_GIVEN){
 				//compares awnser to all translations and selects the smallest
 				double temp[] = new double[vocables.elementAt(i).getTranslations().size()];
 				for(int p = 0; p<vocables.elementAt(i).getTranslations().size() ;p++){
-					temp[p] = compareWords(vocableAnswers.elementAt(i).awnser, vocables.elementAt(i).getTranslations().get(p), fehler);
+					temp[p] = compareWords(vocableAnswers.elementAt(i).awnser, vocables.elementAt(i).getTranslations().get(p));
 				}
 				Arrays.sort(temp);
-				lernfortschritt -= temp[0];
+				vocables.elementAt(i).setLFactor(vocables.elementAt(i).getlFactor()+temp[0]);
 			}
 		}
 		
 	}
 
 	
-	public double compareWords(String wordOne, String wordTwo, double bigFehler){
+	public double compareWords(String wordOne, String wordTwo){
 		double result = 0;
 			if(wordOne.toLowerCase().matches(wordTwo.toLowerCase())){
-				result -= bigFehler/2;
+				result += 5;
 				return result;
 			}else{
-				result -= bigFehler;
-					result += bigFehler* (Math.abs(wordOne.compareTo(wordTwo)) / wordOne.length());
+				if(Math.abs(wordOne.compareTo(wordTwo))==0){
+					result +=10;
+				}else if(Math.abs(wordOne.compareTo(wordTwo))==1){
+					result +=6;
+				}else if(Math.abs(wordOne.compareTo(wordTwo))>=2){
+				}else {
+					result -=5;
+				}
 				return result;
 			}
 	}

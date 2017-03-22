@@ -1,7 +1,12 @@
 package model;
 
+import java.awt.List;
+import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
 
 public class VocableList {
 	private ArrayList<Vocable> vList;
@@ -39,7 +44,35 @@ public class VocableList {
 	 */
 	public Collection<Vocable> chooseLearningList(LearningContext ls){
 		// collect all matching vocables
-		Collection<Vocable> matchingVoc = null; 
+		LinkedList<Vocable> matchingVoc = new LinkedList<Vocable>(); 
+		for(Vocable v: vList){
+			if(ls.matches(v)){
+				matchingVoc.add(v);
+			}
+		}
+		
+		Collections.sort(matchingVoc);
+		while(matchingVoc.size()>ls.getSize()){
+			matchingVoc.removeLast();
+		}
+		
+		//randomize
+		Vocable[] tempList = new Vocable[matchingVoc.size()];
+		for(Vocable v: vList){
+			int i = (int)(Math.random()*matchingVoc.size());
+			while(true){
+				if(tempList[i] == null){
+					tempList[i] = v;
+					break;
+				}
+			}
+		}
+		matchingVoc.clear();
+		for(Vocable v: tempList){
+			matchingVoc.add(v);
+		}
+		
+		
 		return matchingVoc;
 	}
 	

@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.Locale;
 
 
-public class Vocable implements Serializable {
+public class Vocable implements Serializable, Comparable<Vocable>{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -128,6 +128,15 @@ public class Vocable implements Serializable {
 	public String getRandomTranslation(){
 		int i = (int)(Math.random() * this.translations.size());
 		return this.translations.get(i);
+	}
+
+	@Override
+	public int compareTo(Vocable o) {
+		if(this.getlFactor()>o.getlFactor()){
+			return -1;
+		}else{
+			return 1;
+		}
 	}
 	
 }
