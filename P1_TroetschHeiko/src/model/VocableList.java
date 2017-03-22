@@ -1,9 +1,6 @@
 package model;
 
-import java.awt.List;
-import java.util.AbstractList;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -53,7 +50,7 @@ public class VocableList {
 		
 		Collections.sort(matchingVoc);
 		while(matchingVoc.size()>ls.getSize()){
-			matchingVoc.removeLast();
+			matchingVoc.removeFirst();
 		}
 		
 		//randomize
@@ -83,9 +80,19 @@ public class VocableList {
 	 * The search item has to at least 2 letters long
 	 */
 	public Collection<Vocable> find(String w1, String w2){
-		Collection<Vocable> c = null;
-		
-		return c;
+		LinkedList<Vocable> matchingVoc = new LinkedList<Vocable>(); 
+		for (Vocable v: vList) {
+			if(v.getWord().contains(w1)){
+				matchingVoc.add(v);
+			}else{
+				for(String s: v.getTranslations()){
+					if(s.contains(w2)){
+						matchingVoc.add(v);
+					}
+				}
+			}
+		}  
+		return matchingVoc;
 	}
 	
 }
