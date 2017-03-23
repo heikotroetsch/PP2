@@ -26,8 +26,8 @@ public class CSVReader extends LineReader{
 			data.add(parsedWord.toString());
 		}
 		
-		Locale src = new Locale(data.pop());
-		Locale target = new Locale(data.pop());
+		Locale src = IOSettings.getLocale((data.pop()));
+		Locale target = IOSettings.getLocale((data.pop()));
 		String word = data.pop();
 		
 		StringBuffer trans = new StringBuffer(data.pop());
