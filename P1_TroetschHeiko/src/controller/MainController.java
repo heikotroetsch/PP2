@@ -1,8 +1,12 @@
 package controller;
 
+import io.CSVReader;
+import io.CSVWriter;
 import io.LineReader;
 import io.VocableWriter;
 import io.XMLReader;
+import io.XMLVocableReader;
+import io.XMLVocableWriter;
 import io.XMLWriter;
 
 import javax.swing.JOptionPane;
@@ -88,18 +92,18 @@ public class MainController implements Controller{
 	 * */
 	private void loadFile(String filename){
 		if (Settings.mode == Settings.CSVMode){
-//			CSVReader csvReader = new CSVReader();
-//			VocableList vList = csvReader.readFile(filename);
-//			if ((vList != null) && (vList.size() > 0)){
-//				GlobalData.currentLoadList = vList;
-//			}
+			CSVReader csvReader = new CSVReader();
+			VocableList vList = csvReader.readFile(filename);
+			if ((vList != null) && (vList.size() > 0)){
+				GlobalData.currentLoadList = vList;
+			}
 		}
 		else {
-//			XMLReader xmlReader = new XMLVocableReader();
-//			VocableList vList = xmlReader.readFile(filename);
-//			if ((vList != null) && (vList.size() > 0)){
-//				GlobalData.currentLoadList = vList;
-//			}
+			XMLReader xmlReader = new XMLVocableReader();
+			VocableList vList = xmlReader.readFile(filename);
+			if ((vList != null) && (vList.size() > 0)){
+				GlobalData.currentLoadList = vList;
+			}
 		}
 	}
 	
@@ -118,14 +122,14 @@ public class MainController implements Controller{
 	 * a file in CSV format is used or a XML file.
 	 * */
 	private void saveToFile(String filename){	
-//		if (Settings.mode == Settings.CSVMode){
-//			CSVWriter csvWriter = new CSVWriter();
-//			csvWriter.writeFile(GlobalData.currentLoadList, filename);
-//		}
-//		else {
-//			XMLWriter xmlWriter = new XMLVocableWriter();
-//			xmlWriter.writeFile(GlobalData.currentLoadList, filename);
-//		}
+		if (Settings.mode == Settings.CSVMode){
+			CSVWriter csvWriter = new CSVWriter();
+			csvWriter.writeFile(GlobalData.currentLoadList, filename);
+		}
+		else {
+			XMLWriter xmlWriter = new XMLVocableWriter();
+			xmlWriter.writeFile(GlobalData.currentLoadList, filename);
+		}
 	}
 
 }
