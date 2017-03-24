@@ -9,20 +9,22 @@ import javax.swing.text.html.parser.ParserDelegator;
 import model.Vocable;
 
 public class CSVReader extends LineReader{
+	//eng;deu;tree;Baum;big plant with green leafs|Christmas tree|CS: a data structure for hierarchies;1; ;0.0
 
 	@Override
 	protected Vocable parseLine(String line) {
-		//eng;deu;tree;Baum;big plant with green leafs|Christmas tree|CS:
-		//a data structure for  hierarchies;1; ;0.0
+		//eng;deu;tree;Baum;big plant with green leafs|Christmas tree|CS: a data structure for hierarchies;1; ;0.0
 		StringBuffer s = new StringBuffer(line);
 		LinkedList<String> data = new LinkedList<String>();
 		while(s.length()!=0){
 			StringBuffer parsedWord = new StringBuffer("");
-			while(s.charAt(0)!=IOSettings.entrySep&&s.length()!=0){
-				parsedWord.append(line.charAt(0));
+			while(s.length()!=0&&s.charAt(0)!=IOSettings.entrySep){
+				parsedWord.append(s.charAt(0));
 				s.deleteCharAt(0);
 			}
+			if(s.length()!=0&&s.charAt(0)==IOSettings.entrySep){
 			s.deleteCharAt(0);
+			}
 			data.add(parsedWord.toString());
 		}
 		
@@ -34,11 +36,13 @@ public class CSVReader extends LineReader{
 		LinkedList<String> translations = new LinkedList<String>();
 		while(trans.length()!=0){
 			StringBuffer parsedWord = new StringBuffer("");
-			while(trans.charAt(0)!=IOSettings.fieldSep&&trans.length()!=0){
-				parsedWord.append(line.charAt(0));
+			while(trans.length()!=0&&trans.charAt(0)!=IOSettings.fieldSep){
+				parsedWord.append(trans.charAt(0));
 				trans.deleteCharAt(0);
 			}
+			if(trans.length()!=0&&trans.charAt(0)==IOSettings.fieldSep){
 			trans.deleteCharAt(0);
+			}
 			translations.add(parsedWord.toString());
 		}
 		
@@ -46,16 +50,28 @@ public class CSVReader extends LineReader{
 		LinkedList<String> examples = new LinkedList<String>();
 		while(ex.length()!=0){
 			StringBuffer parsedWord = new StringBuffer("");
-			while(ex.charAt(0)!=IOSettings.fieldSep&&ex.length()!=0){
-				parsedWord.append(line.charAt(0));
+			while(ex.length()!=0&&ex.charAt(0)!=IOSettings.fieldSep){
+				parsedWord.append(ex.charAt(0));
 				ex.deleteCharAt(0);
 			}
-			ex.deleteCharAt(0);
+			if(ex.length()!=0){
+				ex.deleteCharAt(0);
+			}
 			examples.add(parsedWord.toString());
 		}
+		int unit = 0;
+		try{
+			unit = Integer.parseInt(data.pop());
+		}
+		catch (NumberFormatException e) {
+		}
 		
-		int unit = Integer.parseInt(data.pop());
-		int section = Integer.parseInt(data.pop());
+		int section = 0;
+		try{
+		section = Integer.parseInt(data.pop());
+		}
+		catch (NumberFormatException e) {
+		}
 		return new Vocable(src, target, word, translations,  examples, unit, section);
 
 	}

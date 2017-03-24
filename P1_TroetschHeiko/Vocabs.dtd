@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE book [
+  <!ELEMENT book        (vocable)>
+  <!ELEMENT vocable     (sLanguage, tLanguage, word, translation, examples, unit, section, lFactor)>
+  <!ELEMENT translation (value)>
+  <!ELEMENT examples    (value)>
+  <!ELEMENT value       (#PCDATA)>
+  <!ELEMENT sLanguage   (#PCDATA)>
+  <!ELEMENT tLanguage   (#PCDATA)>
+  <!ELEMENT word        (#PCDATA)>
+  <!ELEMENT unit        (#PCDATA)>
+  <!ELEMENT section     (#PCDATA)>
+  <!ELEMENT lFactor     (#PCDATA)>
+]>

@@ -4,12 +4,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import model.Vocable;
 
 public class CSVWriter extends VocableWriter {
 	
-	ArrayList<String> totalRepresentation = new ArrayList<String>();
+	LinkedList<String> totalRepresentation = new LinkedList<String>();
 	
 	@Override
 	protected void mapVoc(Vocable v) throws EmptyVocabAttribute {
@@ -24,15 +26,22 @@ public class CSVWriter extends VocableWriter {
 		intermediateRepresentation.append(v.getTargetLanguage().getISO3Language()+IOSettings.entrySep);
 		intermediateRepresentation.append(v.getWord()+IOSettings.entrySep);
 		for(String s: v.getTranslations()){
-			intermediateRepresentation.append(IOSettings.fieldSep);
+			intermediateRepresentation.append(s+IOSettings.fieldSep);
 		}
+		intermediateRepresentation.deleteCharAt(intermediateRepresentation.length()-1);
 		intermediateRepresentation.append(IOSettings.entrySep);
 		for(String s: v.getExamples()){
-			intermediateRepresentation.append(IOSettings.fieldSep);
+			intermediateRepresentation.append(s+IOSettings.fieldSep);
 		}
+		intermediateRepresentation.deleteCharAt(intermediateRepresentation.length()-1);
 		intermediateRepresentation.append(IOSettings.entrySep);
-		intermediateRepresentation.append(v.getUnit()+IOSettings.entrySep);
-		intermediateRepresentation.append(v.getSection()+"\n");
+		intermediateRepresentation.append(v.getUnit());
+		intermediateRepresentation.append(IOSettings.entrySep);
+		intermediateRepresentation.append(v.getSection());
+		intermediateRepresentation.append(IOSettings.entrySep);
+		intermediateRepresentation.append(v.getlFactor());
+		intermediateRepresentation.append("\n");
+
 		totalRepresentation.add(intermediateRepresentation.toString());
 	}
 
@@ -70,10 +79,14 @@ public class CSVWriter extends VocableWriter {
 		for(Vocable v: vList){
 			this.mapVoc(v);
 		}
-		
+		StringBuffer result = new StringBuffer("");
+		for (String s: totalRepresentation) {
+			result.append(s);
+		}
 		
 		try {
-			fw.write(totalRepresentation.toString());
+			
+			fw.write(result.toString());
 			fw.flush();
 			fw.close();
 		} catch (IOException e) {

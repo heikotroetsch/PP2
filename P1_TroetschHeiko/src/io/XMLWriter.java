@@ -20,19 +20,19 @@ public abstract class XMLWriter extends VocableWriter {
 	protected abstract void mapVoc(Vocable v);
 
 	protected void writeAll(FileWriter fw, Collection<Vocable> vList) {
+		if(doc == null){
+			doc = new Document();
+			doc.setRootElement(new Element("book"));
+		}
 		if (doc != null){
 			Element root = this.doc.getRootElement();
-			Element book = new Element("book");
-			book.addContent(super.filename);
-			this.vList = new Element("listOfVocables");
-			root.addContent(book);
-			root.addContent(this.vList);
 			for (Vocable v : vList){
 				mapVoc(v);
 			}
 
 			try {
 				XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
+				System.out.println(doc.toString());
 				out.output(doc,fw);
 			} catch(IOException ioe){
 				System.out.println("Writing XML document to file failed.");

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<book>
+  <vocable>
+    <sLanguage>eng</sLanguage>
+    <tLanguage>deu</tLanguage>
+    <word>shoe</word>
+    <translation>
+      <value>Schuh</value>
+    </translation>
+    <examples>
+      <value>Something to wear on your feet.</value>
+    </examples>
+    <unit>1</unit>
+    <section>3</section>
+    <lFactor>0.0</lFactor>
+  </vocable>
+  <vocable>
+    <sLanguage>eng</sLanguage>
+    <tLanguage>deu</tLanguage>
+    <word>(to) drop</word>
+    <translation>
+      <value>etwas fallen lassen</value>
+    </translation>
+    <examples>
+      <value>Be careful! Don't drop that bottle.</value>
+    </examples>
+    <unit>2</unit>
+    <section>0</section>
+    <lFactor>0.0</lFactor>
+  </vocable>
+  <vocable>
+    <sLanguage>eng</sLanguage>
+    <tLanguage>deu</tLanguage>
+    <word>sunglasses</word>
+    <translation>
+      <value>(eine) Sonnenbrille</value>
+    </translation>
+    <examples>
+      <value>I need my glasses. Where are they?</value>
+    </examples>
+    <unit>2</unit>
+    <section>0</section>
+    <lFactor>0.0</lFactor>
+  </vocable>
+  <vocable>
+    <sLanguage>eng</sLanguage>
+    <tLanguage>deu</tLanguage>
+    <word>(to) shake</word>
+    <translation>
+      <value>schütteln</value>
+    </translation>
+    <examples>
+      <value>He shook his head.</value>
+    </examples>
+    <unit>2</unit>
+    <section>0</section>
+    <lFactor>0.0</lFactor>
+  </vocable>
+</book>
