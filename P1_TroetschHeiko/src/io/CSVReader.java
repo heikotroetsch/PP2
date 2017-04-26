@@ -8,10 +8,20 @@ import javax.swing.text.html.parser.ParserDelegator;
 
 import model.Vocable;
 
+/**
+ * This Class is used to Read a csv file and create a vocable list.
+ * 
+ * The Class extends the Class LineReader.
+ * @author heikotroetsch
+ *
+ */
 public class CSVReader extends LineReader{
 	//eng;deu;tree;Baum;big plant with green leafs|Christmas tree|CS: a data structure for hierarchies;1; ;0.0
 
 	@Override
+	/**
+	 * This method is used to create a Vocable from a singe String line. 
+	 */
 	protected Vocable parseLine(String line) {
 		//eng;deu;tree;Baum;big plant with green leafs|Christmas tree|CS: a data structure for hierarchies;1; ;0.0
 		StringBuffer s = new StringBuffer(line);

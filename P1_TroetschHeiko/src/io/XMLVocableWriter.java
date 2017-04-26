@@ -3,9 +3,16 @@ package io;
 import org.jdom2.Element;
 
 import model.Vocable;
-
+/**
+ * This class is used to write the XML representation of the vocables to a file. It extends the XMLWriter Class.
+ * @author heikotroetsch
+ *
+ */
 public class XMLVocableWriter extends XMLWriter {
 
+	/**
+	 * This method maps a Vocable to the doc variable. It creates a xml representation of a single vocable and adds it to doc. 
+	 */
 	@Override
 	protected void mapVoc(Vocable v) {
 		Element e = new Element("vocable");

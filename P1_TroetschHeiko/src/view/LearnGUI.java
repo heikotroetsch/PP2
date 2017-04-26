@@ -258,7 +258,7 @@ import static controller.Controller.*;
 	}
 	
 	public void enableLearning(){
-		// LearnGUI.this.nextListener.update(LearnGUI.this.learnMode, LearnGUI.this.vocList);
+		//LearnGUI.this.nextListener.update(LearnGUI.this.learnMode, LearnGUI.this.vocList);
 		LearnGUI.this.next.setEnabled(true);
 		LearnGUI.this.check.setEnabled(false);
 		LearnGUI.this.start.setEnabled(true);

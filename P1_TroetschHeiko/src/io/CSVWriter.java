@@ -9,10 +9,21 @@ import java.util.LinkedList;
 
 import model.Vocable;
 
+/**
+ * This class is used to Write all Vocables to a CSV file.
+ * 
+ * The Class extends the VocableWriter Class. 
+ * @author heikotroetsch
+ *
+ */
 public class CSVWriter extends VocableWriter {
 	
 	LinkedList<String> totalRepresentation = new LinkedList<String>();
-	
+	/**
+	 * This method creates a String with an intermediate Representation of the Vocab as a CSV String. The String is seperated by characters specified in the {@link IOSettings}. 
+	 * The finished String is added to the List totalRepresentation.
+	 * @throws EmptyVocabAttribute
+	 */
 	@Override
 	protected void mapVoc(Vocable v) throws EmptyVocabAttribute {
 		// write single vocable to intermediate representation
@@ -45,6 +56,11 @@ public class CSVWriter extends VocableWriter {
 		totalRepresentation.add(intermediateRepresentation.toString());
 	}
 
+	/**
+	 * This Class is an Exception and extends the {@link IOException} class.
+	 * @author heikotroetsch
+	 *
+	 */
 	public class CSVWriteException extends IOException {
 		public CSVWriteException(String message) {
 			super("An CSVWrite Exception Occured while writing the file");
@@ -52,24 +68,46 @@ public class CSVWriter extends VocableWriter {
 	    }
 	}
 	
-	public class FileWriterException extends CSVWriteException {
+	/**
+	 * This class is an Exception to occour when the FileWriter throws an exception. It extends the CSVWriterException class.
+	 * @author heikotroetsch
+	 *
+	 */
+	class FileWriterException extends CSVWriteException {
 		public FileWriterException() {
 			super("The File Writer could not write the file");
 			System.out.println("The File Writer could not write the file");
 	    }
 	}
-	public class EmptyVocabListException extends CSVWriteException {
+	
+	/**
+	 * This class is an Exception to occour when the the VocabList is empty. It extends the CSVWriterException class.
+	 * @author heikotroetsch
+	 *
+	 */
+	class EmptyVocabListException extends CSVWriteException {
 		public EmptyVocabListException() {
 			super("There was no vocab List to be written");
 			System.out.println("There was no vocab List to be written");
 	    }
 	}
-	public class EmptyVocabAttribute extends CSVWriteException {
+	
+	/**
+	 * This class is an Exception to occour when the the Vocable is empty. It extends the CSVWriterException class.
+	 * @author heikotroetsch
+	 *
+	 */
+	class EmptyVocabAttribute extends CSVWriteException {
 		public EmptyVocabAttribute() {
 			super("A Vocab Attribute was Empty");
 			System.out.println("A Vocab Attribute was Empty");
 	    }
 	}
+	
+	/**
+	 * This Method writes all mapped vocabs to a file. It uses the totlRepresentation variable. 
+	 * throws FileWriterException
+	 */
 	@Override
 	protected void writeAll(FileWriter fw, Collection<Vocable> vList) throws FileWriterException, EmptyVocabListException, EmptyVocabAttribute {
 		// write intermediate representation to file

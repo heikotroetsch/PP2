@@ -9,8 +9,16 @@ import org.jdom2.Element;
 
 import model.Vocable;
 
+/**
+ * This class extends the {@link XMLReader} and is used to Read a XML file of Vocables. The Specific format is declared in the dtd File.
+ * @author heikotroetsch
+ *
+ */
 public class XMLVocableReader extends XMLReader {
 
+	/**
+	 * This method creates a Vocable from a given element. 
+	 */
 	@Override
 	protected Vocable parseVocableElement(Element vEle) {
 		Locale src = IOSettings.getLocale((vEle.getChildText("sLanguage")));
@@ -35,11 +43,13 @@ public class XMLVocableReader extends XMLReader {
 		return result;
 	}
 
+	/**
+	 * This Method is used to return a list of Elements. Here it returns all Vocables as a Elements List. 
+	 */
 	@Override
 	protected Collection<Element> getVocableElements(Element root) {
 		List<Element> result;
-		Element book = root.getChild("book");
-		result = book.getChildren();
+		result = root.getChildren();
 		return result;
 	}
 

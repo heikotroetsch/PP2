@@ -38,9 +38,9 @@ public class LearnController implements Controller {
 			break;
 		case Controller.START:
 			this.ls = this.gui.getLearnSettings();
+			this.gui.enableLearning();
 			// create List of Vocabularies to test
 			this.vocList = new Vector<Vocable>(GlobalData.currentLoadList.chooseLearningList(ls));
-
 			if (this.vocList.size() > 0) {
 				int sz = this.vocList.size();
 				int n = ls.getSize();

@@ -48,26 +48,14 @@ public class VocableList {
 			}
 		}
 		
+		
+		
 		Collections.sort(matchingVoc);
 		while(matchingVoc.size()>ls.getSize()){
 			matchingVoc.removeFirst();
 		}
 		
-		//randomize
-		Vocable[] tempList = new Vocable[matchingVoc.size()];
-		for(Vocable v: vList){
-			int i = (int)(Math.random()*matchingVoc.size());
-			while(true){
-				if(tempList[i] == null){
-					tempList[i] = v;
-					break;
-				}
-			}
-		}
-		matchingVoc.clear();
-		for(Vocable v: tempList){
-			matchingVoc.add(v);
-		}
+		Collections.shuffle(matchingVoc);
 		
 		
 		return matchingVoc;
@@ -80,19 +68,33 @@ public class VocableList {
 	 * The search item has to at least 2 letters long
 	 */
 	public Collection<Vocable> find(String w1, String w2){
+		String word1 = w1;
+		String word2= w2;
+		
+		System.out.println(word1);
+		System.out.println(word2);
+
 		LinkedList<Vocable> matchingVoc = new LinkedList<Vocable>(); 
+		LinkedList<Vocable> matchingVocWord = new LinkedList<Vocable>(); 
+		LinkedList<Vocable> matchingVocStrings = new LinkedList<Vocable>(); 
 		for (Vocable v: vList) {
-			if(v.getWord().contains(w1)){
-				matchingVoc.add(v);
-			}else{
+			if(v.getWord().contains(word1)){
+				matchingVocWord.add(v);
+			}
 				for(String s: v.getTranslations()){
-					if(s.contains(w2)){
-						matchingVoc.add(v);
+					if(s.contains(word2)){
+						matchingVocStrings.add(v);
 					}
 				}
 			}
-		}  
+		
+		for(Vocable v: matchingVocWord){
+			if(matchingVocStrings.contains(v)){
+				matchingVoc.add(v);
+			}
+		}
 		return matchingVoc;
 	}
+	
 	
 }

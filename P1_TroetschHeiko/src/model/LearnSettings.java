@@ -45,6 +45,12 @@ public class LearnSettings implements LearningContext{
 	public boolean matches(Vocable v) {
 		boolean isInUnit = false;
 		boolean isInSection = false;
+		if(this.chosenUnits.isEmpty()){
+			isInUnit = true;
+		}
+		if(this.chosenSections.isEmpty()){
+			isInSection = true;
+		}
 		for(int unit: this.chosenUnits){
 			if(unit==v.getUnit()){
 				isInUnit = true;
