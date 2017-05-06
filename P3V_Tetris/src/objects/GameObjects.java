@@ -41,18 +41,21 @@ public abstract class GameObjects {
 	/**
 	 * Diese Methode bewegt den Spielstein einen Block nach rechts, wenn
 	 * moeglich.
+	 * @throws MovementNotPossibleException 
 	 */
-	public abstract void moveRight() ;
+	public abstract void moveRight() throws MovementNotPossibleException ;
 
 	/**
 	 * Diese Methode bewegt den Spielstein einen Block nach links, wenn moeglich.
+	 * @throws MovementNotPossibleException 
 	 */
-	public abstract void moveLeft();
+	public abstract void moveLeft() throws MovementNotPossibleException;
 
 	/**
 	 * Diese Methode bewegt den Spielstein einen Block nach unten, wenn moeglich.
+	 * @throws MovementNotPossibleException 
 	 */
-	public abstract void moveDown();
+	public abstract void moveDown() throws MovementNotPossibleException;
 
 	/**
 	 * Diese Methode bewegt den Spielstein nach folgender Methode:
@@ -68,8 +71,10 @@ public abstract class GameObjects {
 	protected abstract void move(int x, int y, boolean rotate);
 
 	/** Diese Methode rotiert den Spielstein (in der internen Darstellung 
-	 *  durch ds Attribut coords */
-	protected abstract void tryRotation();
+	 *  durch ds Attribut coords 
+	 * @return 
+	 * @throws MovementNotPossibleException */
+	protected abstract void tryRotation() throws MovementNotPossibleException;
 
 	/**
 	 * Diese Methode fixiert den aktuellen Spielstein (indem dieser auf dem Spielbrett

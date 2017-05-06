@@ -2,11 +2,16 @@ package game;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Rectangle2D;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.FileSystems;
+import java.util.Collection;
 
 import javax.swing.*;
+
+import objects.MovementNotPossibleException;
+import objects.Piece;
 
 public class GameFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -67,7 +72,8 @@ public class GameFrame extends JFrame {
 		this.addKeyBindings(this.gamePanel);
 		
 		/*  Starten der Threads */
-			//TODO
+			new GameFrameUpdater().start();
+		
 	}
 
 	private void createComponents(Container c) {
@@ -218,6 +224,10 @@ public class GameFrame extends JFrame {
 		return this.smthread;
 	}
 	
+	public GameState getGameState(){
+		return gs;
+	}
+	
 
 	private class GameOverFrame extends JFrame {
 		private static final long serialVersionUID = 1L;
@@ -295,6 +305,7 @@ public class GameFrame extends JFrame {
 		/** Hoehe des GamePanels */
 		private int height = GameSettings.gamePanelHeight;
 
+		
 		public GamePanel() {
 			super();
 			this.setBounds(GameSettings.spaceLeft, GameSettings.spaceUp, width, height);
@@ -316,10 +327,16 @@ public class GameFrame extends JFrame {
 				drawGrid(graphics2D);
 			}
 			/** Zeichnet aktuellen Stein */
-				//TODO
+			
+
 
 			/** Zeichnet die makierten Stein-Teile im Array */
-				//TODO
+			
+			gs.getCurrent().draw(graphics2D, null);
+	
+			for(Piece p: gs.getVector()){
+				p.draw(graphics2D, null);
+			}
 		}
 
 		private void drawGrid(Graphics2D graphics2D) {
@@ -333,6 +350,7 @@ public class GameFrame extends JFrame {
 				graphics2D.drawLine(0, i * GameSettings.stoneSize, GameSettings.gameWidth * GameSettings.stoneSize,
 						i * GameSettings.stoneSize);
 			}
+			
 		}
 
 		public int getHeight() {
@@ -388,7 +406,26 @@ public class GameFrame extends JFrame {
 				"right");
 		jc.getActionMap().put("right", new ActionOnKeyEvent("right"));
 		
-		//TODO
+		
+		jc.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, false),
+				"left");
+		jc.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_LEFT, 0, false),
+				"left");
+		jc.getActionMap().put("left", new ActionOnKeyEvent("left"));
+		
+		
+		jc.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, false),
+				"up");
+		jc.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_UP, 0, false),
+				"up");
+		jc.getActionMap().put("up", new ActionOnKeyEvent("up"));
+		
+		
+		jc.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, false),
+				"down");
+		jc.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0, false),
+				"down");
+		jc.getActionMap().put("down", new ActionOnKeyEvent("down"));
 
 	}
 
@@ -403,7 +440,24 @@ public class GameFrame extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent ae) {
-			//TODO
+			try {
+				switch(step){
+				case "right":
+					gs.getCurrent().moveRight();
+					break;
+				case "left":
+					gs.getCurrent().moveLeft();
+					break;
+				case "up":
+					gs.getCurrent().tryRotation();
+					break;
+				case "down":
+					gs.getCurrent().moveDown();
+					break;
+				}
+			} catch (MovementNotPossibleException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -424,7 +478,21 @@ public class GameFrame extends JFrame {
 		 * aktualisieren.
 		 */
 		public void run() {
-			//TODO
+			while(true){
+				try {
+					if(gs.getCurrent()==null){
+						gs.setCurrent(new Piece(objects.Shape.S, GameFrame.this));
+					}
+					Thread.sleep(30);
+					gamePanel.repaint();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				gs.getCurrent();
+				gs.getVector();
+				
+			}
 		}
 	}
 
