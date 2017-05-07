@@ -1,5 +1,7 @@
 package game;
 
+import java.util.Vector;
+
 import objects.*;
 
 public class GameController {
@@ -15,7 +17,7 @@ public class GameController {
 	 * Benutzerinteraktionen
 	 */
 	private GameFrame gameFrame;
-
+	
 	/**
 	 * Enthaelt die eigentliche Logik (Kollisions-, Score- und
 	 * Schadensberechnung sowie Levelverwaltung)
@@ -26,6 +28,9 @@ public class GameController {
 	 * Thread, der dafuer sorgt, dass bewegliche Objekte sich bewegen.
 	 */
 	private MoveObjects moveObjects = new MoveObjects();
+	
+	private Shape[] shapeArray = {Shape.I, Shape.J, Shape.L, Shape.O, Shape.S, Shape.Z, Shape.T};
+
 
 	/** Enthaelt Zustand des Spiels bzgl. gameOver */
 	public boolean gameOver = true;
@@ -47,12 +52,19 @@ public class GameController {
 
 		this.gameState = new GameState();
 		this.gameFrame = new GameFrame(gameState);
-
+		
+		while(gameState.nextList.size()<10){
+			gameState.nextList.add(new Piece(shapeArray[(int)(Math.random()*shapeArray.length)],gameFrame));
+		}
 	}
 
 	/** Startet Spiel zum ersten Mal. */
 	public void startGame() {
-		//TODO
+		gameState.setGameState(true);
+		gameState.setGameOver(false);
+		this.gameOver = false;
+		gameManagementThread.start();
+
 	}
 
 	/** Startet das Spiel neu. */
@@ -68,13 +80,16 @@ public class GameController {
 	}
 
 	/** Holt vordersten Spielstein aus Vektor, wenn moeglich */
-	public void newPiece() {
-		//TODO
+	public synchronized void newPiece() {
+		gameState.setCurrent(gameState.nextList.remove(0));
+		while(gameState.nextList.size()<10){
+			gameState.nextList.add(new Piece(shapeArray[(int)(Math.random()*shapeArray.length)],gameFrame));
+		}
 	}
 
 	/** versucht Reihen ab Zeile y zu loeschen, indem er sie Schritt fuer Schritt ueberprueft */
 	public void removeLinesIfPossible(int y) {
-		//TODO
+		
 	}
 	
 	/** Loescht Zeile y, erhoeht Lines */
@@ -115,7 +130,17 @@ public class GameController {
 		 * wurden, um dann das Level zu erh�hen.
 		 */
 		public void run() {
-			//TODO
+			while(true){
+				try {
+					Thread.sleep(30);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(gameState.getCurrent()==null){
+					GameController.this.newPiece();
+				}
+			}
 		}
 	}
 

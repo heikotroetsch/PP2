@@ -29,6 +29,10 @@ public class GameState {
 	 * PreviewPanel gezeichnet werden sollen.
 	 */
 	private Vector<Piece> objectList = new Vector<Piece>();
+	
+	public Vector<Piece> nextList = new Vector<Piece>();
+	
+	public GameController gc;
 
 	/**
 	 * Aktueller Spielstein
@@ -71,7 +75,7 @@ public class GameState {
 		this.level = 1;
 		this.lines = 0;
 		objectList = new Vector<Piece>();
-		GameController.getInstance().newPiece();
+		GameController.getInstance();
 	}
 
 	public void addScore(long score) {
@@ -97,7 +101,7 @@ public class GameState {
 	public void setTimeFallDown(int timeFallDown) {
 		this.timeFallDown = timeFallDown;
 	}
-
+	
 	public int getLevel() {
 		return level;
 	}

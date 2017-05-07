@@ -331,8 +331,9 @@ public class GameFrame extends JFrame {
 
 
 			/** Zeichnet die makierten Stein-Teile im Array */
-			
-			gs.getCurrent().draw(graphics2D, null);
+			if(gs.getCurrent()!=null){
+				gs.getCurrent().draw(graphics2D, null);
+			}
 	
 			for(Piece p: gs.getVector()){
 				p.draw(graphics2D, null);
@@ -465,7 +466,18 @@ public class GameFrame extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			//TODO
+			switch(e.getActionCommand()){
+			case "Start":
+				GameController.getInstance().startGame();
+				break;
+			case "Stop":
+				GameController.getInstance().endGame();
+				break;
+			case "Grid Off":
+				break;
+			default:
+				break;
+			}
 		}
 	}
 
@@ -480,18 +492,11 @@ public class GameFrame extends JFrame {
 		public void run() {
 			while(true){
 				try {
-					if(gs.getCurrent()==null){
-						gs.setCurrent(new Piece(objects.Shape.S, GameFrame.this));
-					}
 					Thread.sleep(30);
 					gamePanel.repaint();
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				gs.getCurrent();
-				gs.getVector();
-				
 			}
 		}
 	}
