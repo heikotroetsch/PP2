@@ -1,6 +1,6 @@
-# Project Title
+# Programmierpraktikum II
 
-Programmierpraktikum 2
+Eine privates repository um alle Files für die Projekte aufzubewahren und zu sharen falls nötig. Hilft auch bei der Strukturierung und Klausurvorbereitung.
 
 ## Getting Started
 
@@ -18,21 +18,22 @@ GitHub Desktop
 
 ### Installing
 
-A step by step series of examples that tell you have to get a development env running
+A step by step series of examples that tell you how to get started.
 
-Say what the step will be
+Each project is located in their own folder. They run independently of each other at all times. For some Projects you need to attach a build path to another framework. Read compiling errors for this.
 
-```
-Give the example
-```
-
-And repeat
+Open Project Folder
 
 ```
-until finished
+Right click on the folder and select run, run as Java Application
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+Find the Main that you want to run
+
+```
+Click finish
+```
+
 
 ## Running the tests
 
