@@ -1,6 +1,6 @@
-# Programmierpraktikum II
+# Programmierpraktikum II - at Mannheim University 
 
-Eine privates repository um alle Files für die Projekte aufzubewahren und zu sharen falls nötig. Hilft auch bei der Strukturierung und Klausurvorbereitung.
+A private repository for all files of all Programming projects at Mannheim University FSS 2017. This is mainly used to store all progress and files created and used for the projects. The repository can help me, other Students or Students in the following years with Programmierpraktikum II. 
 
 ## Getting Started
 
