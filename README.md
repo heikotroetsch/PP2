@@ -22,6 +22,11 @@ A step by step series of examples that tell you how to get started.
 
 Each project is located in their own folder. They run independently of each other at all times. For some Projects you need to attach a build path to another framework. Read compiling errors for this.
 
+*** note
+**Warning:** PP2 Folder is a incomplete folder where the Practices could be stored. Its not a project.
+***
+
+
 Open Project Folder
 
 ```
