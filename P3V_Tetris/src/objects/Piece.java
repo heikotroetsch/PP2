@@ -1,18 +1,32 @@
 package objects;
 
 import java.awt.Graphics2D;
-
+import game.GameController;
 import game.GameFrame;
 import game.GameSettings;
-import game.GameState;
 
+/**
+ * Implementiert eine konkreten Spielstein in Tetris
+ * @author heikotroetsch
+ *
+ */
 public class Piece extends GameObjects{
 
+	/**
+	 * Konstruktor, welcher die Shape und Frame übergibt sowohl wie cords initialisiert und die Position auf eine Zufällige Stelle am Bildschirmrand setzt.
+	 * @param s
+	 * @param f
+	 */
 	public Piece(Shape s, GameFrame f){
 		super(s,f);
 		this.coords = this.pieceShape.getShapeArray();
+		this.position[1] = 0;
+		this.position[0] = GameSettings.stoneSize*((int)(Math.random()*(gf.getGamePanel().gamePanelArray[0].length-(s.getShapeArray()[0].length-1))));
 	}
 	
+	/**
+	 * Malt das Piece anhand eines graphics2d Objekt in das Objekt von dem das Graphics2d objekt kommt. 
+	 */
 	@Override
 	public void draw(Graphics2D graphics2d, int[] pos) {
 		if(pos==null){
@@ -26,8 +40,8 @@ public class Piece extends GameObjects{
 		}else{
 			for (int i = 0; i<this.coords.length; i++){
 			     for (int j = 0; j<this.coords[i].length; j++){
-			    	 if(this.coords[j][i]==1){
-			    		 graphics2d.drawImage(io.ImageLoader.get(this.coords[j][i]), pos[0]+i*GameSettings.stoneSize, pos[1]+j*GameSettings.stoneSize, GameSettings.stoneSize, GameSettings.stoneSize, null, null);
+			    	 if(this.coords[j][i]!=0){
+			    		 graphics2d.drawImage(io.ImageLoader.get(this.coords[j][i]), pos[0]+i*GameSettings.stoneSize, this.position[1]+pos[1]+j*GameSettings.stoneSize, GameSettings.stoneSize, GameSettings.stoneSize, null, null);
 			    	 }
 			     }
 			}
@@ -35,6 +49,9 @@ public class Piece extends GameObjects{
 		
 	}
 
+	/**
+	 * Hier wird ein stein einfach rotiert.
+	 */
 	@Override
 	public void rotate() {
 		if(this.coords!=null){
@@ -48,6 +65,9 @@ public class Piece extends GameObjects{
 		}
 	}
 
+	/**
+	 * Hier wird ein Stein eine Stelle nach rechts bewegt, falls dies möglich ist.
+	 */
 	@Override
 	public void moveRight() throws MovementNotPossibleException {
 		boolean isPossible = true;
@@ -74,6 +94,9 @@ public class Piece extends GameObjects{
 		}
 	}
 
+	/**
+	 * Hier wird ein Stein eine Stelle nach links bewegt, falls dies möglich ist.
+	 */
 	@Override
 	public void moveLeft() throws MovementNotPossibleException {
 		boolean isPossible = true;
@@ -99,7 +122,10 @@ public class Piece extends GameObjects{
 			throw new MovementNotPossibleException("Moving Left not possible");
 		}
 	}
-
+	
+	/**
+	 * Hier wird ein Stein eine Stelle nach unten bewegt, falls dies möglich ist.
+	 */
 	@Override
 	public void moveDown() throws MovementNotPossibleException {
 		boolean isPossible = true;
@@ -126,13 +152,17 @@ public class Piece extends GameObjects{
 			throw new MovementNotPossibleException("Moving down not possible");
 		}
 	}
-
+	
+	
 	@Override
 	protected void move(int x, int y, boolean rotate) {
 		this.position[0] = x*GameSettings.stoneSize;
 		this.position[1] = y*GameSettings.stoneSize;
 	}
 
+	/**
+	 * Hier wird geschaut, ob eine Rotation Möglich ist. Nur dann wird rotiert.
+	 */
 	@Override
 	public void tryRotation() throws MovementNotPossibleException {
 		int[][] rotateArray = null;
@@ -170,6 +200,9 @@ public class Piece extends GameObjects{
 		}
 	}
 
+	/**
+	 * Ein Piece wird hier fixiert indem es in das GamePanelArray und den ObjectVector eingetragen wird. 
+	 */
 	@Override
 	protected void fixPiece() {
 		int[][] gparray = gf.getGamePanel().gamePanelArray;
@@ -180,11 +213,16 @@ public class Piece extends GameObjects{
 				 }
 			 }
 		}
+		boolean gameOver = false;
+		for (int i = 0; i<gparray[0].length; i++){
+			if(gparray[0][i]!=0){
+				gameOver = true;
+			}
+		}
+		if(gameOver){
+			GameController.getInstance().endGame();
+		}
 		gf.getGameState().addObjToVector(this);
 		gf.getGameState().setCurrent(null);
 	}
-	// Vererbung von GameObjects noch zu implementierenden Methoden
-	//TODO
-
-	
 }

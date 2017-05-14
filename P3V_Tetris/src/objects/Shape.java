@@ -1,9 +1,17 @@
 package objects;
 
+/**
+ * Shape ist eine Aufzählung um die Steine in Tetris darzustellen. Besonders wichtig ist, dass hier Farbe und Aussehen mitgespeichert sind. 
+ * @author heikotroetsch
+ *
+ */
 public enum Shape {
 	I, J, L, O, S, T, Z;
 	
-	
+	/**
+	 * 
+	 * @return die Farbe des Steines
+	 */
 	public int getColor(){
 		switch (this) {
 		case Z:
@@ -29,6 +37,10 @@ public enum Shape {
 		}
 	}
 	
+	/**
+	 * 
+	 * @return das Array welches die Form beschreibt.
+	 */
 	public int[][] getShapeArray (){
 		int[][] i = new int[3][3];
 		for(int[] p:i){

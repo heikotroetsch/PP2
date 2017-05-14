@@ -86,7 +86,7 @@ public abstract class GameObjects {
 
 	/** Diese Methode fuegt den Spielstein in das uebergebene Array ein. 
 	 * @throws MovementNotPossibleException */
-	protected void addToArray(int[][] array){
+	protected void addToArray(int[][] array) throws MovementNotPossibleException{
 			try {
 			for (int i = 0; i < coords.length; i++) {
 				for (int j = 0; j < coords[0].length; j++) {
@@ -94,8 +94,7 @@ public abstract class GameObjects {
 						if (array[position[0] + i][position[1] + j] == 0) {
 							array[position[0] + i][position[1] + j] = coords[i][j];
 						} else {
-							System.out.println("Hinzufuegen nicht erfolgreich");
-							return;
+							throw new MovementNotPossibleException("Adding to Array not possible");
 						}
 					}
 				}

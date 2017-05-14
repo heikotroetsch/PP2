@@ -2,7 +2,6 @@ package game;
 
 import java.util.Vector;
 import objects.*;
-import objects.Shape;
 
 public class GameState {
 
@@ -30,7 +29,11 @@ public class GameState {
 	 */
 	private Vector<Piece> objectList = new Vector<Piece>();
 	
+	/**
+	 * Liste welche die nächsten Spielsteine beinhaltet. 
+	 */
 	public Vector<Piece> nextList = new Vector<Piece>();
+	
 	
 	public GameController gc;
 
@@ -76,6 +79,16 @@ public class GameState {
 		this.lines = 0;
 		objectList = new Vector<Piece>();
 		GameController.getInstance();
+	}
+	
+	public void reset() {
+		this.objectList = new Vector<Piece>();
+		this.current = null;
+		this.gameActive = false;
+		this.level = 1;
+		this.score = 0;
+		this.level = 1;
+		this.lines = 0;
 	}
 
 	public void addScore(long score) {

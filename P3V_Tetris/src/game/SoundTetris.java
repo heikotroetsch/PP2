@@ -15,6 +15,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  * Diese Klasse sorgt fuer die Hintergrundmusik, die im SingMusikThread in
  * Schleife abgespielt werden soll.
  */
+ @Deprecated 
 public class SoundTetris {
 	private static Mixer mixer;
 	private static Clip clip1;
@@ -23,6 +24,7 @@ public class SoundTetris {
 		return clip1;
 	}
 
+	@Deprecated
 	public static void singTetris() {
 
 		Mixer.Info[] mixInfos = AudioSystem.getMixerInfo();

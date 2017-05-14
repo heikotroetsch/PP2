@@ -2,16 +2,17 @@ package game;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.Rectangle2D;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.FileSystems;
-import java.util.Collection;
-
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
 import javax.swing.*;
-
 import objects.MovementNotPossibleException;
-import objects.Piece;
 
 public class GameFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -72,7 +73,11 @@ public class GameFrame extends JFrame {
 		this.addKeyBindings(this.gamePanel);
 		
 		/*  Starten der Threads */
-			new GameFrameUpdater().start();
+			gameUpdater = new GameFrameUpdater();
+			gameUpdater.start();
+			
+			smthread = new SingMusikThread();
+			smthread.start();
 		
 	}
 
@@ -237,29 +242,51 @@ public class GameFrame extends JFrame {
 		 * 
 		 * @param score
 		 *            Endpunktestand nach verlorenem Spiel
+		 *            
+		 * Hier Wurde das Design und Farben nachträglich an das Spiel angepasst.
 		 */
 		public GameOverFrame(int score) {
 
 			this.setTitle("Game Over!");
 			this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
+			this.setBackground(new Color(77, 109, 132));
 			final Dimension dimension = this.getToolkit().getScreenSize();
 
 			this.setResizable(true);
 			getContentPane().setLayout(null);
+			getContentPane().setBackground(Color.lightGray);
+			//Icon img = new ImageIcon("resources/tetris2.jpg");
+			JPanel panel = new JPanel();
+			panel.setBackground(new Color(77, 109, 132));
+			JLabel gameover = new JLabel("GAME OVER!");
+			gameover.setBorder(BorderFactory.createLineBorder(new Color(77, 109, 132), 5));
+			gameover.setHorizontalAlignment(SwingConstants.CENTER);
+			gameover.setFont(font.deriveFont(GameSettings.fontSize));
+			gameover.setAlignmentY(CENTER_ALIGNMENT);
+			JLabel labellevel = new JLabel("LEVEL:          "+gs.getLevel());
+			labellevel.setFont(font.deriveFont(GameSettings.fontSize));
+			labellevel.setHorizontalAlignment(SwingConstants.LEFT);
+			labellevel.setBorder(BorderFactory.createLineBorder(new Color(77, 109, 132), 5));
+			c.add(labellevel);
 
-			Icon img = new ImageIcon("resources/tetris2.jpg");
+			JLabel labellines = new JLabel("LINES:          "+gs.getLines());
+			labellines.setFont(font.deriveFont(GameSettings.fontSize));
+			labellines.setHorizontalAlignment(SwingConstants.LEFT);
+			labellines.setBorder(BorderFactory.createLineBorder(new Color(77, 109, 132), 5));
+			c.add(labellines);
 
-			JLabel scoreLabel = new JLabel("Sie haben " + score + " Punkte");
-			JLabel secondLabel = new JLabel("erreicht!");
-			scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
-			scoreLabel.setFont(font.deriveFont(GameSettings.fontSize));
-			secondLabel.setHorizontalAlignment(SwingConstants.CENTER);
-			secondLabel.setFont(font.deriveFont(GameSettings.fontSize));
-			scoreLabel.setBounds(0, 0, 404, 126);
-			secondLabel.setBounds(0,40,404,126);
-			getContentPane().add(scoreLabel);
-			getContentPane().add(secondLabel);
+			JLabel labelpoints = new JLabel("SCORE:          "+gs.getScore());
+			labelpoints.setFont(font.deriveFont(GameSettings.fontSize));
+			labelpoints.setHorizontalAlignment(SwingConstants.LEFT);
+			labelpoints.setBorder(BorderFactory.createLineBorder(new Color(77, 109, 132), 5));
+			c.add(labelpoints);
+
+			
+			panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+			panel.add(gameover);
+			panel.add(labellevel);
+			panel.add(labellines);
+			panel.add(labelpoints);
 			
 
 			JButton okayButton = new JButton("Okay");
@@ -269,16 +296,24 @@ public class GameFrame extends JFrame {
 				}
 			});
 
-			okayButton.setBounds(136, 140, 128, 50);
-			getContentPane().add(okayButton);
+			okayButton.setHorizontalAlignment(SwingConstants.CENTER);
+			okayButton.setBackground(Color.LIGHT_GRAY);
+			okayButton.setBorder(BorderFactory.createEtchedBorder(Color.GRAY, Color.LIGHT_GRAY));
+			panel.add(okayButton);
 
-			JLabel image = new JLabel(img);
-			image.setBounds(0, 0, 404, 215);
-			getContentPane().add(image);
 			this.setSize(426, 271);
 			this.setLocation((int) ((dimension.getWidth() - this.getWidth()) / 2),
 					(int) ((dimension.getHeight() - this.getHeight()) / 2));
-
+			
+			JPanel jp = new JPanel();
+			jp.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 10));
+			panel.setBorder(BorderFactory.createLineBorder(new Color(77, 109, 132), 20));
+			panel.setVisible(true);
+			jp.setLayout(new BorderLayout(100,100));
+			jp.add(panel);
+			jp.setBackground(new Color(77, 109, 132));
+			jp.setOpaque(false);
+			setContentPane(jp);
 			this.setVisible(true);
 
 		}
@@ -314,7 +349,7 @@ public class GameFrame extends JFrame {
 		/**
 		 * Zeichnet das GamePanel.
 		 */
-		public synchronized void paint(Graphics g) {
+		public void paint(Graphics g) {
 
 			Graphics2D graphics2D = (Graphics2D) g;
 			graphics2D.setColor(GameSettings.gamePanelBackgroundColor);
@@ -330,13 +365,18 @@ public class GameFrame extends JFrame {
 			
 
 
-			/** Zeichnet die makierten Stein-Teile im Array */
+			/** Zeichnet aktuellen Stein */
 			if(gs.getCurrent()!=null){
 				gs.getCurrent().draw(graphics2D, null);
 			}
 	
-			for(Piece p: gs.getVector()){
-				p.draw(graphics2D, null);
+			/** Zeichnet die makierten Stein-Teile im Array */
+			for(int i = 0; i<this.gamePanelArray.length;i++){
+				for(int p = 0; p<this.gamePanelArray[i].length;p++){
+					if(this.gamePanelArray[i].length!=0){
+			    		 graphics2D.drawImage(io.ImageLoader.get(this.gamePanelArray[i][p]), p*GameSettings.stoneSize, i*GameSettings.stoneSize, GameSettings.stoneSize, GameSettings.stoneSize, null, null);
+					}
+				}
 			}
 		}
 
@@ -391,16 +431,21 @@ public class GameFrame extends JFrame {
 			Graphics2D graphics2D = (Graphics2D) g;
 			graphics2D.setColor(GameSettings.gamePanelBackgroundColor);
 			graphics2D.fillRect(0, 0, width, height);
-
-			//TODO
-
+			int[] i ={60,90};
+			//holt sich das nächste Piece und zeigt dieses im preview an. 
+			if(gs.getGameState()){
+				gs.nextList.get(0).draw(graphics2D, i);
+			}
 		}
 
 	}
 
-
+/**
+ * Ermöglicht das binden aller keys an ein Listener. Dies ermöglicht die bewegung der Steine.
+ * @param jc
+ */
 	private void addKeyBindings(JComponent jc) {
-		//Beispiel
+		
 		jc.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, false),
 				"right");
 		jc.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_RIGHT, 0, false),
@@ -439,6 +484,9 @@ public class GameFrame extends JFrame {
 			step = actionStr;
 		}
 
+		/**
+		 * Methode um die verschiedenen Key inputs zu behandeln.
+		 */
 		@Override
 		public void actionPerformed(ActionEvent ae) {
 			try {
@@ -464,6 +512,9 @@ public class GameFrame extends JFrame {
 
 	private class ButtonListener implements ActionListener {
 
+		/**
+		 * Diese Methode ruft die richtigen methoden auf wenn Start, Stop oder Grid Off betätigt wird.
+		 */
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			switch(e.getActionCommand()){
@@ -471,9 +522,12 @@ public class GameFrame extends JFrame {
 				GameController.getInstance().startGame();
 				break;
 			case "Stop":
-				GameController.getInstance().endGame();
+				if(gs.getGameState()){
+					GameController.getInstance().endGame();
+				}
 				break;
 			case "Grid Off":
+				gs.setGridOn(!gs.isGridOn());
 				break;
 			default:
 				break;
@@ -488,12 +542,18 @@ public class GameFrame extends JFrame {
 		 * Run-Methode soll Informationsanzeigen der GUI (lines, level,
 		 * score) in kurzen Abstaenden mit den Daten aus der Klasse gameState
 		 * aktualisieren.
+		 * 
+		 * Hier wurde hauptsächlich die veränderte Paint methode mit repaint aufgerufen. Das Timeout ermöglicht ca. 30 frames die sekunde
 		 */
 		public void run() {
 			while(true){
 				try {
 					Thread.sleep(30);
+					GameFrame.this.score.setText(gs.getScore()+"");
+					GameFrame.this.lines.setText(gs.getLines()+"");
+					GameFrame.this.level.setText(gs.getLevel()+"");
 					gamePanel.repaint();
+				    previewPanel.repaint();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -502,8 +562,36 @@ public class GameFrame extends JFrame {
 	}
 
 	private class SingMusikThread extends Thread {
+		/**
+		 * Diese Run methode im SingMusicThread erstellt einen Clip Objekt für audio. Dies ermöglicht, dass der Song im Loop wiederholt werden kann.
+		 * 
+		 * In der while schleife führen wir den song so lange aus, bis der GameState sich verändert und wir desshalb die musik pausieren und auf den Anfang zurück Setzen.
+		 */
 		public void run() {
-			//TODO
+		    String tetrisMusic = "resources/sound.wav";
+		    AudioInputStream stream;
+		    File file = new File(tetrisMusic);
+		    AudioFormat format;
+		    DataLine.Info info;
+		    Clip clip = null;
+		    try {
+				stream = AudioSystem.getAudioInputStream(file);
+			    format = stream.getFormat();
+			    info = new DataLine.Info(Clip.class, format);
+			    clip = (Clip) AudioSystem.getLine(info);
+			    clip.open(stream);
+		    } catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		    while(true){
+		    	if(gs.getGameState()){
+		    		clip.loop(Clip.LOOP_CONTINUOUSLY);
+				}else{
+					clip.stop();
+					clip.setFramePosition(0);
+				}
+		    }
 		}
 	}
 }
