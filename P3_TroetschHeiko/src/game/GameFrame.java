@@ -373,7 +373,7 @@ public class GameFrame extends JFrame {
 			/** Zeichnet die makierten Stein-Teile im Array */
 			for(int i = 0; i<this.gamePanelArray.length;i++){
 				for(int p = 0; p<this.gamePanelArray[i].length;p++){
-					if(this.gamePanelArray[i].length!=0){
+					if(this.gamePanelArray[i][p]!=0){
 			    		 graphics2D.drawImage(io.ImageLoader.get(this.gamePanelArray[i][p]), p*GameSettings.stoneSize, i*GameSettings.stoneSize, GameSettings.stoneSize, GameSettings.stoneSize, null, null);
 					}
 				}
