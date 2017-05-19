@@ -12,6 +12,7 @@ public class Question implements Serializable{
 	private String frage;
 	private String[] auswahl;
 	private int antwort;
+	int hashCodeMotherQuestion;
 	
 	public Question(Kategorie k, String q, String a1, String a2, String a3,  String a4, int lsg){
 		this.kategorie = k;
@@ -29,12 +30,17 @@ public class Question implements Serializable{
 		this.auswahl = new String[q2.auswahl.length];
 		System.arraycopy(q2.auswahl, 0, this.auswahl, 0, q2.auswahl.length);
 		this.antwort = -1;  // leave answer open (unknown)
+		this.hashCodeMotherQuestion = q2.hashCode();
 	}
 
 	public String getFrage() {
 		return frage;
 	}
 
+	public int getHashCodeMotherQuestion() {
+		return this.hashCodeMotherQuestion;
+	}
+	
 	public String[] getAuswahl() {
 		return auswahl;
 	}

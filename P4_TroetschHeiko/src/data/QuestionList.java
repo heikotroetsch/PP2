@@ -29,6 +29,17 @@ public class QuestionList {
 		}
 	}
 	
+	public Question getQuestionByHash(int hash){
+		for(ArrayList<Question> qList: questions){
+			for(Question q: qList){
+				if(q.hashCode() == hash){
+					return q;
+				}
+			}
+		}
+		return null;
+	}
+	
 	public Question randomQuestion(String kName){
 		Integer i = categoryNames.get(kName);
 		if (i != null){

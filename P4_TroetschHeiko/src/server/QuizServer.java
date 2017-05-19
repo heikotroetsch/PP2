@@ -59,6 +59,7 @@ public class QuizServer extends Thread {
 		ArrayList<Question> qList = QuestionIO.readQuestions(Parameters.questionFilename);
 		allQuestions = new QuestionList();
 		allQuestions.insertQuestions(qList);
+
 	}
 	
 

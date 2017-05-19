@@ -39,6 +39,8 @@ public class QuizClientUI extends JFrame {
 	
 	private int antwortClient = -1;
 	
+	Question currentQuestion;
+	
 	public QuizClientUI(QuizClient client){
 		super("Quiz Client");
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -118,6 +120,10 @@ public class QuizClientUI extends JFrame {
 			this.antwortButtons[i].setText(q.getAuswahl(i));
 			this.antwortButtons[i].setBackground(antwortColor); // reset color
 			this.antwortButtons[i].setEnabled(true);
+			this.antwortButtons[i].setOpaque(true);
+			this.antwortButtons[i].setBorder(null);
+
+
 		}
 		Color col = q.getKategorie().getColor();
 		this.fragenPanel.setBackground(col);
@@ -132,7 +138,7 @@ public class QuizClientUI extends JFrame {
 			this.antwortButtons[korrekteAntwort-1].setBackground(rightAnswer);
 		} else {
 			this.antwortButtons[this.antwortClient-1].setBackground(rightAnswer);
-			// noch Punkte hochzählen
+			//punkte hoch
 		}
 	}
 	
@@ -151,6 +157,7 @@ public class QuizClientUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			Question q = QuizClientUI.this.client.getQuestionFromServer(k);
 			if (q != null){
+				QuizClientUI.this.currentQuestion = q;
 				QuizClientUI.this.prepareFragenPanel(q);
 				QuizClientUI.this.exchangePanels(QuizClientUI.this.fragenPanel);	
 			}
@@ -167,11 +174,14 @@ public class QuizClientUI extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			QuizClientUI.this.antwortClient = a_nr;
-			int richtige_antw = QuizClientUI.this.client.getAnswerFromServer();
+			int richtige_antw = QuizClientUI.this.client.getAnswerFromServer(QuizClientUI.this.currentQuestion.getHashCodeMotherQuestion());
 			QuizClientUI.this.updateFragenPanel(richtige_antw);
+			
 			for (JButton b : QuizClientUI.this.antwortButtons){
 				b.setEnabled(false);
 			}
+
+
 			QuizClientUI.this.nextButton.setEnabled(true);
 		}
 	}

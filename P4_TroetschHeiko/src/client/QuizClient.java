@@ -27,7 +27,8 @@ public class QuizClient {
 		   this.ui = new QuizClientUI(this);
 		   boolean connectionEstablished = connect();
 		   if (connectionEstablished){
-			   this.ui.setVisible(true);	   
+			   this.ui.setVisible(true);	
+			   System.out.println("connected");
 		   } else {
 			   System.out.println("Sorry: no connection to " + host + ":" +  port);
 		   }
@@ -35,25 +36,61 @@ public class QuizClient {
 	   
 	   /* Verbindung aufbauen und Streams initialisieren */
 	   private boolean connect(){
-		   return true;
+		   boolean connected = false;
+		   while(!connected){
+			   try {
+					c = new Socket(this.hostName, this.port);
+					zumServer = new ObjectOutputStream(c.getOutputStream());
+					vomServer = new ObjectInputStream(c.getInputStream());
+					connected = true;
+				} catch (Exception e) {
+					e.printStackTrace();
+					connected = false;
+				}
+		   }
+		   return connected;
 	   }
 	   
 
 	   /* Frage vom Server anfordern */
 	   Question getQuestionFromServer(Kategorie k) {
-			 return QuizClient.q_test;  // Dummy Testfrage 
-
+		   try {
+			zumServer.writeObject(new MessageQuestionRequest(k));
+			Message m = ((Message)vomServer.readObject());
+			MessageQuestion mq = (MessageQuestion)m;
+			return mq.getQuestion();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	   }
 	   
 	   /* Antwort zu der aktuellen (der als letzten gestellten) 
 	    * Frage vom Server anfordern 
 	    * */
-	   int getAnswerFromServer(){
-		   return QuizClient.q_test.getAntwort();
+	   int getAnswerFromServer(int hash){
+		   try {
+			zumServer.writeObject(new MessageAwnserRequest(hash));
+			Message m = (Message)vomServer.readObject();
+			MessageAwnser ma = (MessageAwnser)m;
+			ma.getAwnser();
+			return ma.getAwnser();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
 	   }
 	   
 	   /* Server benachrichtigen und Verbindung schließen */
 	   void endQuiz(){
+		   try {
+			zumServer.writeObject(new EndQuiz());
+			zumServer.close();
+			vomServer.close();
+			c.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	   }
 	   
 
