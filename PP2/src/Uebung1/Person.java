@@ -1,21 +1,33 @@
 package Uebung1;
-import java.util.GregorianCalendar;
-import java.util.Calendar;
 
-    public class Person implements KeyHolder {
-	private String name;
-	private int gebJahr;
-
-	public Person(String n, int j){
-	    this.name = n;
-	    this.gebJahr = j;
+public class Person implements KeyHolder{
+	
+	static int NEXT_KEY;
+	final int key;
+	String name;
+	
+	Person(){
+		this.key = NEXT_KEY;
+		NEXT_KEY++;
+	}
+	
+	Person(String s){
+		this.key = NEXT_KEY;
+		this.name = s;
+		NEXT_KEY++;
+	}
+	
+	
+	@Override
+	public int getKey() {
+		return this.key;
 	}
 
-	public String toString(){
-	    return name + " (*" + this.gebJahr +")";
+	public static void main(String[]args){
+		KeyHolder kh = new Person();
+		System.out.println(kh.getKey());
+		KeyHolder kh2 = new Person();
+		System.out.println(kh2.getKey());
 	}
-
-	public int getKey(){
-	    return (new GregorianCalendar()).get(Calendar.YEAR) - gebJahr;
-	}
-    }
+	
+}
