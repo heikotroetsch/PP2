@@ -1,0 +1,31 @@
+Temp {
+    border: 3px solid green;
+}
+Messwerte {
+    font-family : Verdana,sans-serif;
+}  
+Temp {
+      display:list-item;
+      font-size: 20px;
+      list-style-type: square;  
+      list-style-position: inside;
+      text-indent: 50px;
+}
+Temp:before {
+    content: 'Temperatur: ';
+} 
+Temp:after {
+    content: '\00b0';
+}
+Weight {
+    display:list-item;
+    list-style-position: inside;
+    color:red;
+    font-style:italic;  text-indent : 75px;
+}
+Weight:before {
+    content: 'Gewicht: ';
+}
+Messwerte[Patient]:before {  
+    content:'Name: ' attr(Patient);
+}

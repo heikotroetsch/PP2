@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html>
+<?xml-stylesheet type="text/css" href="Messungen.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:mw="Messwerte">
+<head><title>Messwerte</title></head>
+<body>
+    <h1> Meine Messwerte </h1>
+    <mw:Messwerte Patient="Moritz"> 
+      <mw:Data DATE="4.1.1999">
+	<mw:Temp>37.5</mw:Temp>
+	<mw:Weight>5870</mw:Weight>
+      </mw:Data>
+      <mw:Data DATE="5.1.1999">
+	<mw:Temp>37.6</mw:Temp>
+	<mw:Weight>6000</mw:Weight>
+      </mw:Data>
+    </mw:Messwerte>
+</body>
+</html>

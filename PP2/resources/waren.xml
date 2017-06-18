@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Lager>
+  <Position> 81, 3N 110, 8W</Position>
+  <Ware id="x12-333-AA" Anzahl="30" Preis="9.90">
+	<Name>Uno</Name> 
+	<Kategorie> Kartenspiel </Kategorie>
+	</Ware>
+  <Ware id="x12-128-BB" Anzahl="5" Preis="24.95">
+	<Name>Risiko</Name>
+	<Kategorie>Brettspiel</Kategorie>
+</Ware>
+</Lager>

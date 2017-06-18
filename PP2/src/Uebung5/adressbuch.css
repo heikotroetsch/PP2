@@ -1,0 +1,44 @@
+adressbuch {
+    border:1px solid black; 
+    margin:5px; 
+    padding:10px; 
+    font-family: Arial;
+    display: block;
+    counter-reset: iterator;
+}
+bezeichnung {
+    display: block;
+    margin:10px; 
+    font-size: 32pt;
+    text-decoration:underline;
+}
+adresse:before {
+    display: inline;
+    content: 'A' counter(iterator) ':';
+    counter-increment: iterator;
+    background-color:#b5efac;
+}
+adresse {
+    font-size: 14pt;
+}
+vorname {
+    display: inline;
+    background-color:#efefcf;
+}
+nachname {
+    display: inline;
+    background-color:#efefcf;
+}
+email, telefon, notiz {
+    display: block;
+    margin-left:35px;
+}
+
+telefon:before {
+    content: '(' attr(vorwahl) ')';
+}
+
+notiz {
+  font-size: 10pt;
+  margin-bottom:20px;
+}

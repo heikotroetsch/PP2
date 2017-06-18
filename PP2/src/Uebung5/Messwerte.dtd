@@ -1,0 +1,8 @@
+<!-- DTD für Fieberkurve -->
+
+<!ELEMENT Messwerte (Data)+>
+<!ATTLIST Messwerte Patient CDATA #REQUIRED>
+<!ELEMENT Data (Temp, Weight)>
+<!ATTLIST Data DATE CDATA #REQUIRED>
+<!ELEMENT Temp(#PCDATA)>
+<!ELEMENT Weight(#PCDATA)>

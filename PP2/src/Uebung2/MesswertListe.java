@@ -20,19 +20,7 @@ class MesswertFake {
     }
 }
 
-class Messwert {
-    private double temperatur;
-    private int windstaerke;
 
-    public Messwert(double t, int w){
-	this.temperatur = t;
-	this.windstaerke = w;
-    }
-    
-    public String toString(){
-	return "***Messwert***: \n" + "Temperatur: " + this.temperatur +"\nWindstaerke: " + + this.windstaerke + "\n";
-    }
-}
 
 class MesswertListe{
 	Vector<Double> messungen1;

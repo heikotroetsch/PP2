@@ -1,0 +1,19 @@
+
+<!ELEMENT adressbuch (bezeichnung, adresse+)>
+
+<!ELEMENT bezeichnung (#PCDATA)>
+
+<!ELEMENT adresse (vorname, nachname, email, telefon, notiz?)>
+<!ATTLIST adresse
+          id ID #REQUIRED
+>
+<!ELEMENT email (#PCDATA)>
+<!ELEMENT vorname (#PCDATA)>
+<!ELEMENT nachname (#PCDATA)>
+<!ELEMENT notiz (#PCDATA)>
+<!ELEMENT telefon (#PCDATA)>
+<!ATTLIST telefon
+          land CDATA #IMPLIED
+          vorwahl CDATA #REQUIRED
+>
+<!ENTITY at "@">

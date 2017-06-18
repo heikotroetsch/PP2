@@ -1,0 +1,14 @@
+<Adressbuch>
+	<Adresse>
+		<Name>Max Müller</Name>
+		<Telefon>0621 6669888</Telefon>
+		<Email>Max@mueller.de</Email>
+		<Position>Mein BoxTrainer</Position>
+	</Adresse>
+	<Adresse>
+		<Name>Martina Kramer</Name>
+		<Telefon> 01234 9229922</Telefon>
+		<Email>Max@mueller.de</Email>
+		<Position>Mein Psychologin</Position>
+	</Adresse>
+</Adressbuch>
